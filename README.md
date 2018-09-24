@@ -22,3 +22,5 @@ uzivatel se zologuje a
 
 zatim be rpsing security
 
+//todo pri pujcovnai se overi jestli uzivatel nema propadle clenstvi, kdyz ano vyahdoi se vyjimka,
+//todo jak se to preda do View?
