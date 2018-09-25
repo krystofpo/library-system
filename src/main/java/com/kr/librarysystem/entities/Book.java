@@ -1,9 +1,6 @@
 package com.kr.librarysystem.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,10 +11,13 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+@ManyToOne
     private Author author;
     private String title;
     private boolean borrowed=false;
     private Date borrowedUntil;
+
+    @ManyToOne
     private LibraryMember borrowedBy;
 
     public Book() {

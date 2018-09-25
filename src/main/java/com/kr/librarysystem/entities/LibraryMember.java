@@ -2,10 +2,7 @@ package com.kr.librarysystem.entities;
 
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.*;
 
 @Entity
@@ -17,6 +14,8 @@ public class LibraryMember {
     private String firstName;
     private String lastName;
     private Date membershipUntil;
+
+@OneToMany(mappedBy = "borrowedBy")
     private final List<Book> borrowedBooks=new ArrayList<>();
 
     public LibraryMember() {

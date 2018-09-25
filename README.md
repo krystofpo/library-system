@@ -24,3 +24,11 @@ zatim be rpsing security
 
 //todo pri pujcovnai se overi jestli uzivatel nema propadle clenstvi, kdyz ano vyahdoi se vyjimka,
 //todo jak se to preda do View?
+
+
+nemel jsem anotace many to one, hubernate hazel cchybu
+
+opridat one to many atd anotace, kdyz entita ma odkaz na jinou entitu
+
+https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html
+u many to one je vlastnici strana vzdy many. a ta vlastnena musi mit mappedBy, vlastnici ne.
