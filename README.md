@@ -32,3 +32,7 @@ opridat one to many atd anotace, kdyz entita ma odkaz na jinou entitu
 
 https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html
 u many to one je vlastnici strana vzdy many. a ta vlastnena musi mit mappedBy, vlastnici ne.
+
+delam integracni test se srig contextme, repository.
+@spring boot test, ale potom musim sputit test pomoci spring runner. jde tpustit spock se
+spring runner?
