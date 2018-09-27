@@ -23,23 +23,39 @@ public class Library {
     }
 
     @Transactional
-    public LibraryMember borrowBooks(LibraryMember libraryMember, List<Book> books) {
+    public void memberBorrowsBooks(LibraryMember libraryMember, List<Book> books) {
 //todo verify that member has unexpired membership, throw exception, view will handle it
-
-        updateBooks(libraryMember, books);
-        updateMember(libraryMember, books);
-        return null;
+        assignMemberToBooks(libraryMember, books);
+        assignBooksToMember(libraryMember, books);
     }
 
-    private void updateBooks(LibraryMember libraryMember, List<Book> books) {
+    private void assignMemberToBooks(LibraryMember libraryMember, List<Book> books) {
         for (Book book : books) {
             book.borrowMe(libraryMember);
         bookRepository.save(book);
         }
     }
 
-    private void updateMember(LibraryMember libraryMember, List<Book> books) {
+    private void assignBooksToMember(LibraryMember libraryMember, List<Book> books) {
         libraryMember.borrowBooks(books);
         libraryMemberRepository.save(libraryMember);
+    }
+
+
+    public void memberReturnsBooks(LibraryMember libraryMember, List<Book> books) {
+        unassignMemberFromBooks(books);
+        unassignBooksFromMember(libraryMember, books);
+    }
+
+    private void unassignBooksFromMember(LibraryMember libraryMember, List<Book> books) {
+        libraryMember.returnBooks(books);
+        libraryMemberRepository.save(libraryMember);
+    }
+
+    private void unassignMemberFromBooks(List<Book> books) {
+        for (Book book : books) {
+            book.returnMe();
+            bookRepository.save(book);
+        }
     }
 }

@@ -84,7 +84,7 @@ public class Book {
     }
 
     private Date calculateBorrowUntil() {
-        return null;
+        return new Date();
     }
 
     @Override

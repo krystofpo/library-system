@@ -73,3 +73,13 @@ pridla sem transcitonal nad tridu s testem a nad metodu borrow a test funguje
 
 todo upozorneni na konec vypujcky
 
+todo borrow book vraci membera nebo void? objekt memeber se upravi metodou
+
+//todo je potrbea u knihy mit boorrowed boolena a bororowed by user neni tduplicivta?
+kdyz me zajimaji knihy k pujcnei tak staci tam kde borowed by je null
+
+//integracni test udelat pujceni, vraceni, pujceni a zokotorlvat stav db a v unit testy zkonorlvat i stav objetku member  abook , v interaci staci jen db
+
+pujcneo d kdyz pridt do testu jak se nastavi pujceno do nejaky proifle porerty por test nastaiv tna krakto a
+overit ze se posle mail uzivatleum udelat integracni test, zamockovat posilani mailu a nechat test bezet par minut
+a pocakt ze se psusti timer a vovzla se metda poslan mail, v tom testu se nastavi pujceno do na par sekund a interval kontorly se nastavi na par sekund a okud to vzprsi dirve nez za xz sekudnt tak se posle

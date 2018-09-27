@@ -43,25 +43,34 @@ class LibraryIntegrationSpec extends Specification {
     def libraryMember = TestDataG.getLibraryMember()
     def book1 = TestDataG.getBook1()
     def book2 = TestDataG.getBook2()
+    def book3 = TestDataG.getBook3()
 
-    def 'borrowing saves to repositories'() {
+    def 'borrowing and returning saves to repositories'() {
         given:
         authorRepository.save(book1.getAuthor())
         authorRepository.save(book2.getAuthor())
+        authorRepository.save(book3.getAuthor())
+
         bookRepository.save(book1)
         bookRepository.save(book2)
+        bookRepository.save(book3)
+
         libraryMemberRepository.save(libraryMember)
 
-
         when:
-        library.borrowBooks(libraryMember, [book1, book2])
+        library.memberBorrowsBooks(libraryMember, [book1, book2])
+        library.memberReturnsBooks(libraryMember, [book2])
+        library.memberBorrowsBooks(libraryMember, [book3])
 
         then:
         libraryMemberRepository.count() == 1L
-        libraryMemberRepository.findAll().get(0).getBorrowedBooks()
-                .stream().anyMatch { book -> book.getTitle().contains('Malostranske') }
+        def actualBorrowedBooks = libraryMemberRepository.findAll().get(0).getBorrowedBooks()
+        actualBorrowedBooks.size() == 2
+        actualBorrowedBooks.containsAll([book1, book3])
+        actualBorrowedBooks.stream().allMatch { book -> book.getBorrowedBy() == libraryMember && book.getBorrowedUntil() != null && book.isBorrowed() == true }
 
-        bookRepository.count() == 2L
-        bookRepository.findAll().get(0).getBorrowedBy().getFirstName() == 'Josef'
+        bookRepository.count() == 3L
+        bookRepository.findAll().stream()
+                .filter { book -> book.borrowed == false && book.borrowedUntil == null && book.borrowedBy == null }.count() == 1L
     }
 }
