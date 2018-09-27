@@ -1,34 +1,67 @@
 package com.kr.librarysystem.library
 
+import com.kr.librarysystem.TestDataG
+import com.kr.librarysystem.persistence.AuthorRepository
+import com.kr.librarysystem.persistence.BookRepository
+import com.kr.librarysystem.persistence.LibraryMemberRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
-
-import javax.sql.DataSource
-
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 class LibraryIntegrationSpec extends Specification {
 
+
     @Autowired
-    private ApplicationContext context
+    private Library library
 
-    def "context loads"() {
-        expect:
-        context != null
+    @Autowired
+    private LibraryMemberRepository libraryMemberRepository
+
+    @Autowired
+    private BookRepository bookRepository
+
+    @Autowired
+    private AuthorRepository authorRepository
+
+    def setup() {
+        bookRepository.deleteAll()
+        libraryMemberRepository.deleteAll()
+        authorRepository.deleteAll()
     }
 
-    def 'datasource is test DB'() {
-        expect:
-        context.getBean(DataSource).getConnection().getMetaData().getURL().contains('test')
-
+    def cleanup() {
+        bookRepository.deleteAll()
+        libraryMemberRepository.deleteAll()
+        authorRepository.deleteAll()
     }
 
-    //todo spirng profile test, add applicaiton tes tpoo, datasource
-    //todo add pord proifle, prod dataoruce
-    //todo search test datasoure spring boot
+    def libraryMember = TestDataG.getLibraryMember()
+    def book1 = TestDataG.getBook1()
+    def book2 = TestDataG.getBook2()
 
+    def 'borrowing saves to repositories'() {
+        given:
+        authorRepository.save(book1.getAuthor())
+        authorRepository.save(book2.getAuthor())
+        bookRepository.save(book1)
+        bookRepository.save(book2)
+        libraryMemberRepository.save(libraryMember)
+
+
+        when:
+        library.borrowBooks(libraryMember, [book1, book2])
+
+        then:
+        libraryMemberRepository.count() == 1L
+        libraryMemberRepository.findAll().get(0).getBorrowedBooks()
+                .stream().anyMatch { book -> book.getTitle().contains('Malostranske') }
+
+        bookRepository.count() == 2L
+        bookRepository.findAll().get(0).getBorrowedBy().getFirstName() == 'Josef'
+    }
 }

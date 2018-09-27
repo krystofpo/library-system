@@ -3,29 +3,31 @@ package com.kr.librarysystem.library;
 import com.kr.librarysystem.entities.Book;
 import com.kr.librarysystem.entities.LibraryMember;
 import com.kr.librarysystem.persistence.BookRepository;
-import com.kr.librarysystem.persistence.MemberRepository;
+import com.kr.librarysystem.persistence.LibraryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Properties;
 
 @Service
 public class Library {
 
-    private MemberRepository memberRepository;
+    private LibraryMemberRepository libraryMemberRepository;
     private BookRepository bookRepository;
 
     @Autowired
-    public Library(MemberRepository memberRepository, BookRepository bookRepository) {
-        this.memberRepository = memberRepository;
+    public Library(LibraryMemberRepository libraryMemberRepository, BookRepository bookRepository) {
+        this.libraryMemberRepository = libraryMemberRepository;
         this.bookRepository = bookRepository;
     }
 
+    @Transactional
     public LibraryMember borrowBooks(LibraryMember libraryMember, List<Book> books) {
 //todo verify that member has unexpired membership, throw exception, view will handle it
-        updateMember(libraryMember, books);
+
         updateBooks(libraryMember, books);
+        updateMember(libraryMember, books);
         return null;
     }
 
@@ -38,6 +40,6 @@ public class Library {
 
     private void updateMember(LibraryMember libraryMember, List<Book> books) {
         libraryMember.borrowBooks(books);
-        memberRepository.save(libraryMember);
+        libraryMemberRepository.save(libraryMember);
     }
 }

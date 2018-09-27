@@ -3,7 +3,7 @@ package com.kr.librarysystem.library
 import com.kr.librarysystem.TestDataG
 import com.kr.librarysystem.entities.LibraryMember
 import com.kr.librarysystem.persistence.BookRepository
-import com.kr.librarysystem.persistence.MemberRepository
+import com.kr.librarysystem.persistence.LibraryMemberRepository
 import spock.lang.Specification
 
 
@@ -18,7 +18,7 @@ class LibrarySpec extends Specification {
 
     def 'borrow books saves books and library member'() {
         given:
-        MemberRepository memberRepository = Mock()
+        LibraryMemberRepository memberRepository = Mock()
         BookRepository bookRepository = Mock()
         Library library = new Library(memberRepository, bookRepository)
         def member = new LibraryMember()

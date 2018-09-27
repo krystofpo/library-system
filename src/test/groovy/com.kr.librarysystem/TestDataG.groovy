@@ -2,6 +2,7 @@ package com.kr.librarysystem
 
 import com.kr.librarysystem.entities.Author
 import com.kr.librarysystem.entities.Book
+import com.kr.librarysystem.entities.LibraryMember
 
 class TestDataG {
 
@@ -21,5 +22,9 @@ class TestDataG {
      new Book(
                 author: new Author(firstName: 'Egon', lastName: 'Bondy'),
                 title: 'Saman')
+    }
+
+    static LibraryMember getLibraryMember() {
+        new LibraryMember(firstName: 'Josef', lastName: 'Novak')
     }
 }
