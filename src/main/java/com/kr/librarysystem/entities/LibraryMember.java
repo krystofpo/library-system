@@ -102,9 +102,10 @@ public class LibraryMember {
 
     @Override
     public String toString() {
-        return "LibraryMember{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Library Member: ");
+        sb.append(firstName);
+        sb.append(lastName);
+        return sb.toString();
     }
 }

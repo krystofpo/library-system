@@ -6,6 +6,7 @@ import com.kr.librarysystem.entities.Expiration;
 import com.kr.librarysystem.entities.LibraryMember;
 import com.kr.librarysystem.persistence.ExpirationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Transactional
+@Service
 public class ExpirationNotificationService {
 
     private ExpirationRepository expirationRepository;
