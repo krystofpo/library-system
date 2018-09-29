@@ -13,6 +13,7 @@ public class LibraryMember {
     private Long id;
     private String firstName;
     private String lastName;
+    private String email;
     private Date membershipUntil;
 
 @OneToMany(mappedBy = "borrowedBy")
@@ -43,6 +44,14 @@ public class LibraryMember {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getMembershipUntil() {

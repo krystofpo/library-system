@@ -13,21 +13,31 @@ import org.springframework.stereotype.Service;
 public class EmailSender {
 
     private JavaMailSender sender;
-    private String to;
+    private String testTo;
+    private String from = "library@librarysystem.cz";
 
     @Autowired
     public EmailSender(JavaMailSender sender, @Value("${spring.mail.to}") String to) {
         this.sender = sender;
-        this.to = to;
+        this.testTo = to;
     }
 
-
-    public void sendEmail(String to, String from, String subject, String message) {
+    public void sendEmail(String to, String subject, String message) {
         SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom("library@librarysystem.cz");
-        email.setTo(this.to);
-        email.setSubject("upozorneni na zpozdne");
-        email.setText("nabiha zpozdne za tyto jednotky: Neruda, ");
+        email.setFrom(from);
+        email.setTo(to);
+        email.setSubject(subject);
+        email.setText(message);
         sender.send(email);
     }
+
+    void sendTestEmail() {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setFrom(from);
+        email.setTo(testTo);
+        email.setSubject("library notification test");
+        email.setText("Dobry den, zacalo nabihat zpozdne za nasledujici knihy: ...");
+        sender.send(email);
+    }
+
 }

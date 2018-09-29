@@ -164,3 +164,9 @@ PK a FK
 je treba pustit test EmailSenderSpec s JVM argumenty -Dspring.mail.username=xxxx -Dspring.mail.password=xxxx -Dspring.mail.to=<REALNA-EMAIL-ADRESA>
 kde xxx jsou realne prihlasovaci udaje k gmail uctu
 
+//todo multuthtaing timer a colvnai notfy musi oetrit aby se nestal rpoblem s vlkny, immutabel jak to vyrsti
+databaze atd
+
+//todo vsude v entitach Date
+
+//todo vsude strib buildery u to string

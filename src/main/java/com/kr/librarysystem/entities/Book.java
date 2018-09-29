@@ -103,8 +103,11 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Book: ");
+        sb.append(author.toString());
+        sb.append(": ");
+        sb.append(title);
+        return sb.toString();
     }
 }

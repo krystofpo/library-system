@@ -12,15 +12,15 @@ class EmailSenderSpec extends Specification {
     @Autowired
     private EmailSender sender
 
-    def "SendEmail"() {
-//TODO
-        /*
-        to run the test correctly you need to set JVM arguments
-        -Dspring.mail.username=xxxx -Dspring.mail.password=xxxx -Dspring.mail.to=xxxx
-        if you don't set them then nonsense values from application.properties will be used
-         */
-        expect:
-        sender.sendEmail("", "", "", "")
-        true
-    }
+//    def "SendEmail"() {
+////TODO
+//        /*
+//        to run the test correctly you need to set JVM arguments
+//        -Dspring.mail.username=xxxx -Dspring.mail.password=xxxx -Dspring.mail.to=xxxx
+//        if you don't set them then nonsense values from application.properties will be used
+//         */
+//        expect:
+//        sender.sendTestEmail()
+//        true
+//    }
 }
