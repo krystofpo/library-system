@@ -40,7 +40,7 @@ class LibraryIntegrationSpec extends Specification {
         authorRepository.deleteAll()
     }
 
-    def libraryMember = TestDataG.getLibraryMember()
+    def libraryMember = TestDataG.getLibraryMember1()
     def book1 = TestDataG.getBook1()
     def book2 = TestDataG.getBook2()
     def book3 = TestDataG.getBook3()

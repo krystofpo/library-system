@@ -27,6 +27,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	//compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile("com.h2database:h2")
 
 	testCompile 'org.codehaus.groovy:groovy-all:2.4.15'
@@ -34,6 +35,8 @@ dependencies {
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
+	compile group: 'cglib', name: 'cglib-nodep', version: '3.2.5'
+
 
 	//testCompile('org.springframework.security:spring-security-test')
 }
