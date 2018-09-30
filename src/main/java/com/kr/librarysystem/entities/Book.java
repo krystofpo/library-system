@@ -1,6 +1,7 @@
 package com.kr.librarysystem.entities;
 
 import javax.persistence.*;
+import java.time.Period;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,11 +17,17 @@ public class Book {
     private String title;
     private boolean borrowed=false;
     private Date borrowedUntil;
+    @Transient
+    private Period borrowingPeriod;
+    @Transient
+    private Period notificationPeriod; // example: member will be notified 5 days before expiration of this book
 
     @ManyToOne
     private LibraryMember borrowedBy;
 
     public Book() {
+        borrowingPeriod=Period.ofDays(20);
+        notificationPeriod =Period.ofDays(5);
     }
 
     public Long getId() {
@@ -69,6 +76,22 @@ public class Book {
 
     public void setBorrowedBy(LibraryMember borrowedBy) {
         this.borrowedBy = borrowedBy;
+    }
+
+    public Period getBorrowingPeriod() {
+        return borrowingPeriod;
+    }
+
+    public void setBorrowingPeriod(Period borrowingPeriod) {
+        this.borrowingPeriod = borrowingPeriod;
+    }
+
+    public Period getNotificationPeriod() {
+        return notificationPeriod;
+    }
+
+    public void setNotificationPeriod(Period notificationPeriod) {
+        this.notificationPeriod = notificationPeriod;
     }
 
     public void borrowMe(LibraryMember member) {

@@ -194,3 +194,21 @@ ulzonei expirace pri pujcnei knih - udela expiraitons service, library jen zavol
 stjen tak pri vraceni knih,
  a ntiifkactioan serivce muze iskat seznam dnesnich knih  abudoucnoch kni taky od exiriton service
 
+
+rpi pujcovani knih se pusti expiraiton service a ta vyhledava v ezpir repository a pak uklada Expiraiton a zas dalsi kniha vyhleda
+takze pro kazdou knihu se vyhleda  2* expiraion, to se upravi a zse ulozi
+a dalsi knha hleda treba to samy expiraiton. Hibernate diky 1st level cache
+nedotazuje DB pokazde, ale jen to taha z cache a pokud se to ulozi, tak jen do cache
+a do DB se to promitne az na konci session. Udelat celou session v ramci 1 metody jde pomoci
+transactional.
+https://stackoverflow.com/questions/13531122/multiple-transactions-in-a-single-hibernate-session-with-spring?noredirect=1&lq=1
+https://stackoverflow.com/questions/13531122/multiple-transactions-in-a-single-hibernate-session-with-spring
+https://stackoverflow.com/questions/25709976/spring-boot-spring-data-how-are-hibernate-sessions-managed
+
+je otazka na thread safe kdyz se pujcuje a vola se expiraitonservice a udela se session a zarovne
+MCV spusti daalsi volani tak to muze byt v jinem vlakne? sesson nen i thread safe
+
+
+https://stackoverflow.com/questions/11881479/how-do-i-update-an-entity-using-spring-data-jpa?rq=1
+kdyz je metoda trasnacitonal tak se zmeny entity samy ukladaji na konci metody do DB?
+Neni treba volat repository save?
