@@ -15,11 +15,13 @@ public class Library {
 
     private LibraryMemberRepository libraryMemberRepository;
     private BookRepository bookRepository;
+    private ExpirationService expirationService;
 
     @Autowired
-    public Library(LibraryMemberRepository libraryMemberRepository, BookRepository bookRepository) {
+    public Library(LibraryMemberRepository libraryMemberRepository, BookRepository bookRepository, ExpirationService expirationService) {
         this.libraryMemberRepository = libraryMemberRepository;
         this.bookRepository = bookRepository;
+        this.expirationService = expirationService;
     }
 
     @Transactional
@@ -27,6 +29,7 @@ public class Library {
 //todo verify that member has unexpired membership, throw exception, view will handle it
         assignMemberToBooks(libraryMember, books);
         assignBooksToMember(libraryMember, books);
+        expirationService.addExpiration(books);
     }
 
     private void assignMemberToBooks(LibraryMember libraryMember, List<Book> books) {
@@ -45,6 +48,7 @@ public class Library {
     public void memberReturnsBooks(LibraryMember libraryMember, List<Book> books) {
         unassignMemberFromBooks(books);
         unassignBooksFromMember(libraryMember, books);
+        expirationService.removeExpiration(books);
     }
 
     private void unassignBooksFromMember(LibraryMember libraryMember, List<Book> books) {

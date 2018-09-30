@@ -170,3 +170,27 @@ databaze atd
 //todo vsude v entitach Date
 
 //todo vsude strib buildery u to string
+
+test na timer, soring ev tools, h2 console
+
+multuthreaing kvuli temru muzou bejt entity immutable? hibenrat stjnee tam dava proxies,
+pridt synchronised? kdy muze nstast kolize? kdy se muze pracovt v jendu chvili s s jednou enittiu
+nebo spirng componentuou atd? jk vyresit deadlock straviton atd?
+
+db on exit false k cemu to je?
+
+polymorphismus nejen knihy le i casopisy atd
+misto jap repository napr enotty amnage rpresisit atd
+
+pridat u poujceni knih vytovreni ezpiraiton
+
+priciintni lduhu kazdy den, opet timer? nebo ten smay timer?
+npr timer se ssutit  a nekam ulozi datum poseldni psustnei itemru, pri dlasim spustnei acte
+dautm poslendiho posustnei spocita kolik dni pulynulo, uplynulo, timer se posuti jedenkrat denne
+porjede vsechny uzivatele a podiva se na vsechny knihy nebo jednoudseji podiva se na pujcene knihy a
+pricte dluh?
+
+ulzonei expirace pri pujcnei knih - udela expiraitons service, library jen zavola epxir service
+stjen tak pri vraceni knih,
+ a ntiifkactioan serivce muze iskat seznam dnesnich knih  abudoucnoch kni taky od exiriton service
+
