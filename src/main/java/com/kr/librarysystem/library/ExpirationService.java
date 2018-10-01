@@ -96,6 +96,7 @@ public class ExpirationService {
         return calculateDate(book.getBorrowingPeriod());
     }
 
+    @Transactional
     public void removeExpiration(List<Book> books) {
         for (Book book : books) {
             removeRecordFromExpirations(book);
