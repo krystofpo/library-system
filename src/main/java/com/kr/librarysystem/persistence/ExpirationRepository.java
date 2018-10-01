@@ -9,5 +9,7 @@ import java.util.List;
 public interface ExpirationRepository extends JpaRepository<Expiration, Long> {
 
     List<Expiration> findByExpiresOn(String expires);
+    List<Expiration> findByTodayExpirationsContains(Book book);
+    List<Expiration> findByFutureExpirationsContains(Book book);
 
 }

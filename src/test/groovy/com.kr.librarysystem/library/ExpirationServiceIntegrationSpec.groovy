@@ -40,7 +40,7 @@ class ExpirationServiceIntegrationSpec extends Specification {
 
     DateService dateService = Mock()
 
-    def service = new ExpirationService(expirationRepository, dateService)
+    ExpirationService service
     def book1 = TestDataG.getBook1()
     def book2 = TestDataG.getBook2()
    def book3 = TestDataG.getBook3()
@@ -50,6 +50,7 @@ class ExpirationServiceIntegrationSpec extends Specification {
     Closure<Boolean> assertEqualsExpirations
 
     def setup() {
+        service = new ExpirationService(expirationRepository, dateService)
         authorRepository.deleteAll()
         libraryMemberRepository.deleteAll()
         bookRepository.deleteAll()

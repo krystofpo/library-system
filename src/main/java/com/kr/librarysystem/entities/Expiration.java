@@ -1,7 +1,6 @@
 package com.kr.librarysystem.entities;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,10 +15,10 @@ public class Expiration {
     private String expiresOn;
 
     @OneToMany
-    private List<Book> todayExpirations=new ArrayList<>();
+    private List<Book> todayExpirations = new ArrayList<>();
 
     @OneToMany
-    private List<Book> futureExpirations=new ArrayList<>();
+    private List<Book> futureExpirations = new ArrayList<>();
 
 
     public Expiration() {
@@ -42,22 +41,24 @@ public class Expiration {
     }
 
     public List<Book> getFutureExpirations() {
+
         return futureExpirations;
     }
 
-    public void addToTodayExpirations(List<Book> books) {
-        todayExpirations.addAll(books);
-    }
-    public void addToFutureExpirations(List<Book> books) {
-        futureExpirations.addAll(books);
+    public void addToTodayExpirations(Book book) {
+        todayExpirations.add(book);
     }
 
-    public void removeFromTodayExpirations(List<Book> books) {
-        todayExpirations.removeAll(books);
+    public void addToFutureExpirations(Book book) {
+        futureExpirations.add(book);
     }
 
-    public void removeFromFutureExpirations(List<Book> books) {
-        futureExpirations.removeAll(books);
+    public void removeFromTodayExpirations(Book book) {
+        todayExpirations.remove(book);
+    }
+
+    public void removeFromFutureExpirations(Book book) {
+        futureExpirations.remove(book);
     }
 
     public void setFutureExpirations(List<Book> futureExpirations) {

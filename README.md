@@ -230,4 +230,8 @@ u vracnei prid odebrani data pujceno na false
 
 //test timeru, pripprofilu te tpsustnei kazdych x sekund, v oralnim prfioilu jendou denne
 
+//toddo prjemenovat v expiraiton a v book future a today na neco srozumitlenejsiho napriklad expiraiotn a earlyNotificaitn nebo NotificOn Expiry a Notif InAdvance
+
+podivat se jeslti funguje  1st evel cache hibernat epzpanout sql a dival se jestli uklada nekolikrat tu samou entitu nebo
+na konci
 
