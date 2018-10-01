@@ -3,7 +3,6 @@ package com.kr.librarysystem
 import com.kr.librarysystem.entities.Author
 import com.kr.librarysystem.entities.Book
 import com.kr.librarysystem.entities.LibraryMember
-import com.kr.librarysystem.persistence.ExpirationRepository
 
 import javax.persistence.EntityManager
 
@@ -51,10 +50,10 @@ class TestDataG {
                 title: 'Learn Java 13 in 3 Days')
     }
 
-    static void saveBooks(List<Book> books, EntityManager em) {
+    static void persistBooksAndNestedObjects(List<Book> books, EntityManager em) {
         saveAuthors(books, em)
         saveMembers(books, em)
-        persistBooks(books, em)
+        saveBooks(books, em)
     }
 
     private static void saveAuthors(List<Book> books, EntityManager em) {
@@ -75,7 +74,7 @@ class TestDataG {
         }
     }
 
-    private static void persistBooks(List<Book> books, EntityManager em) {
+    private static void saveBooks(List<Book> books, EntityManager em) {
         books.each {
             em.persist(it)
         }

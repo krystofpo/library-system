@@ -212,3 +212,22 @@ MCV spusti daalsi volani tak to muze byt v jinem vlakne? sesson nen i thread saf
 https://stackoverflow.com/questions/11881479/how-do-i-update-an-entity-using-spring-data-jpa?rq=1
 kdyz je metoda trasnacitonal tak se zmeny entity samy ukladaji na konci metody do DB?
 Neni treba volat repository save?
+
+//todo v enittach co s metou set List? mela by byt private, aby se list nemohl zmenit i list dkelarovan
+final
+ale hibenrat epotebuje mit getery a setery? nebo si to umi udelat reflexi sam? nebo muze prisutpovat i
+k privatnimu seteru?
+
+//pri vraceni knih a odebirani expiraton pokud jsou fuutr ebooks a toaday books prazdny tak vymaz
+expiraiton
+zkontorlvat v testu
+
+//todo pridat tes u library system pri vraceni ze se avola remove na e ri service
+//u pujcovani pridat do testu nastaveni data
+//jaky format data?
+
+u vracnei prid odebrani data pujceno na false
+
+//test timeru, pripprofilu te tpsustnei kazdych x sekund, v oralnim prfioilu jendou denne
+
+
