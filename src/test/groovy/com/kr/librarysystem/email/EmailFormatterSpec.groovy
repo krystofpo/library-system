@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 
 class EmailFormatterSpec extends Specification {
 
-    def emailSender = Mock(EmailSender)
+    def emailSender = Mock(EmailSenderReal)
     def emailFormatter = new EmailFormatter(emailSender)
     def member = TestDataG.getLibraryMember1()
     def book1 = TestDataG.getBook1()

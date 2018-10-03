@@ -2,7 +2,7 @@ package com.kr.librarysystem.library
 
 import com.kr.librarysystem.TestDataG
 import com.kr.librarysystem.email.EmailFormatter
-import com.kr.librarysystem.email.EmailSender
+import com.kr.librarysystem.email.EmailSenderReal
 import com.kr.librarysystem.entities.Expiration
 import com.kr.librarysystem.persistence.ExpirationRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,7 +26,7 @@ class ExpirationNotificationServiceIntegrationSpec extends Specification {
     @Autowired
     private ExpirationRepository repository
 
-    private EmailSender emailSender
+    private EmailSenderReal emailSender
     private EmailFormatter emailFormatter
     private ExpirationNotificationService service
 

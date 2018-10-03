@@ -10,7 +10,7 @@ import spock.lang.Specification
 class EmailSenderSpec extends Specification {
 
     @Autowired
-    private EmailSender sender
+    private EmailSenderReal sender
 
 //    def "SendEmail"() {
 ////TODO
