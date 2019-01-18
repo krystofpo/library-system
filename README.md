@@ -1,6 +1,9 @@
 role uzivatleu, sprong security
 ctenar hled aknihy viid ritng vii jeslti jeknih apujcena le nveidi kym
 
+pridat elastic search, nejaky timer pridava do indexu knihy z d. samostant aplikace? soucasti stystemu?
+
+
 knihovni vidi knihy a akym je puejcna a vsehcny uzivatele a ejjich knihy
 
 pujcka knihy dela knihvnik  vyzbere uzivatle e apa pak vyber eknihy a ty mu pujci
@@ -10,6 +13,8 @@ vraceni kniyky
 uzivatel se muze podivat jaky knizky ma pujceny, senam knih, kter ejsou pujcene filtr
 
 filtrovnai knih podle pujceni, raitngu atd, jak udelat ui?
+
+spring mvc nebo vystavit rest
 
 zacit se soring seurity, podivat se naspring webflow
 
@@ -177,6 +182,9 @@ multuthreaing kvuli temru muzou bejt entity immutable? hibenrat stjnee tam dava 
 pridt synchronised? kdy muze nstast kolize? kdy se muze pracovt v jendu chvili s s jednou enittiu
 nebo spirng componentuou atd? jk vyresit deadlock straviton atd?
 
+
+
+
 db on exit false k cemu to je?
 
 polymorphismus nejen knihy le i casopisy atd
@@ -209,6 +217,9 @@ je otazka na thread safe kdyz se pujcuje a vola se expiraitonservice a udela se 
 MCV spusti daalsi volani tak to muze byt v jinem vlakne? sesson nen i thread safe
 
 
+
+
+
 https://stackoverflow.com/questions/11881479/how-do-i-update-an-entity-using-spring-data-jpa?rq=1
 kdyz je metoda trasnacitonal tak se zmeny entity samy ukladaji na konci metody do DB?
 Neni treba volat repository save?
@@ -235,3 +246,42 @@ u vracnei prid odebrani data pujceno na false
 podivat se jeslti funguje  1st evel cache hibernat epzpanout sql a dival se jestli uklada nekolikrat tu samou entitu nebo
 na konci
 
+vytvorit metodu main, ktera bude zvlast bude it spingovou kongfiguraci, vezme si enttiy atd a vygeneruje
+sql skripty pro vytvoreni schemat v db. tyo skripty pak pustit gradle update pomoci liquibase rpi nasazeni na produkcu
+
+pri deployi napred psutit grdle udpate a pak pri psuteni aplikace hibernate validate?
+
+------------------
+TIMER
+1. pouzit @Scheduled(cron = "${cron.expression}")
+nacist z app pro, por tes tjine nez pro produkci.
+prepdokladam, ze timer se spusti  vnovem vlakne, to zavola epxir service, to bude se pripjivat
+k repository, je repo thred safe? hibernate jak to dela kdzy se vola z vice vlaekn? jak se chova trnsasctional
+ve vic vlaknemch?
+connection pool?
+nepromicha se neco?
+
+jak otestovat timer?
+spusti se test a s tim i context timer bude napr kazdy tri sekundy firovat,
+bude se hledat v expir repository bude rapddnza nic, pusti se test expir integr
+ta ulozi do epxir repository a v testu se zavola expir serivce chck expir a ta se poidvat do realnyu expr repo
+a najde ale mezitim se pusti schduelrem taky metody expir service, bude konflikt
+proto mit jenom unit test na expir service a zamockovanou expir repo
+a mit jen jedn integracni test kterej bude mit realny expir repo, realnou expir service a mock emailu
+a na pocatku se jen ulozyi do expir repo, pak test pocka a scheudler se sam vyapli
+zavola epir service, ta zavola relanou expr repo, nacte, zavola email mock,
+test to overi.
+pro test bude v app properties cron experssion a pro prod bude jiy cron exproession
+
+
+
+architkerura bud mt vedle sbe v resources vsechny pofily prod dev test nebo test dat do test resources
+kdyz posuti gradle spring context proc nebere s main resources ale z test resources?
+
+//todo refactor v testech persisovtavni obejtu, delegovat to na pomocnou em todu TesDtaG
+
+
+//todo v tesetech uvest db do vychoziho stavu. do kadych teardown ale mezi jednotlivymi nebo az po vsech testech?
+
+//rozlisit unit testy a integracni testy nejak v gradlu, napr pustit gradlem jen unit testy a integracni
+pomoci profulu nebo group?

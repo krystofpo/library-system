@@ -9,8 +9,8 @@ import spock.lang.Specification
 @ActiveProfiles("test")
 class EmailSenderSpec extends Specification {
 
-    @Autowired
-    private EmailSenderReal sender
+    //@Autowired
+    //private EmailSenderReal sender
 
 //    def "SendEmail"() {
 ////TODO

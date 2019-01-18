@@ -6,12 +6,12 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import spock.mock.DetachedMockFactory;
 
-@TestConfiguration
+//@TestConfiguration
 public class TestMockConfig {
     private DetachedMockFactory factory = new DetachedMockFactory();
 
 
-    @Bean
+    //@Bean
     public EmailSender emailSender(){
       return factory.Mock(EmailSender.class);
     }

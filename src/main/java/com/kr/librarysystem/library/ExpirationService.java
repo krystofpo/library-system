@@ -74,7 +74,7 @@ public class ExpirationService {
         if (expirationForTodayDate.isEmpty()) {
             createTodayInNewExpiration(book, todayDate);
         } else {
-            addTodayToExistingExpiration(book, expirationForTodayDate);
+            addTodayToExistingExpiration(book, expirationForTodayDate); //todo add get 0
         }
 
     }
