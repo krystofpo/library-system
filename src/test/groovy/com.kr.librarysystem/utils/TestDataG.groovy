@@ -1,12 +1,13 @@
-package com.kr.librarysystem
+package com.kr.librarysystem.utils
 
 import com.kr.librarysystem.entities.Author
 import com.kr.librarysystem.entities.Book
 import com.kr.librarysystem.entities.LibraryMember
+import com.kr.librarysystem.persistence.AuthorRepository
+import com.kr.librarysystem.persistence.BookRepository
+import com.kr.librarysystem.persistence.LibraryMemberRepository
 
-import javax.persistence.EntityManager
-
-class TestDataG {
+class TestDataG { //toto merge db saver and helper tgoer in one groovy class
 
     static Book getBook1() {
         new Book(
@@ -50,33 +51,33 @@ class TestDataG {
                 title: 'Learn Java 13 in 3 Days')
     }
 
-    static void persistBooksAndNestedObjects(List<Book> books, EntityManager em) {
-        saveAuthors(books, em)
-        saveMembers(books, em)
-        saveBooks(books, em)
+    static void persistBooksAndNestedObjects(List<Book> books, BookRepository bookRepository, AuthorRepository authorRepository, LibraryMemberRepository libraryMemberRepository) {
+        saveAuthors(books, authorRepository)
+        saveMembers(books, libraryMemberRepository)
+        saveBooks(books, bookRepository)
     }
 
-    private static void saveAuthors(List<Book> books, EntityManager em) {
+    private static void saveAuthors(List<Book> books, AuthorRepository authorRepository) {
         books.each {
             def author = it.getAuthor()
             if (author != null) {
-                em.persist(author)
+                authorRepository.save(author)
             }
         }
     }
 
-    private static void saveMembers(List<Book> books, EntityManager em) {
+    private static void saveMembers(List<Book> books, LibraryMemberRepository repo) {
         books.each {
             def member = it.getBorrowedBy()
             if (member != null) {
-                em.persist(member)
+                repo.save(member)
             }
         }
     }
 
-    private static void saveBooks(List<Book> books, EntityManager em) {
+    private static void saveBooks(List<Book> books, BookRepository repo) {
         books.each {
-            em.persist(it)
+            repo.save(it)
         }
     }
 }

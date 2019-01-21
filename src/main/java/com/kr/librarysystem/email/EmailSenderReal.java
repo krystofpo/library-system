@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"prod", "local"})
+@Profile({"prod", "local"}) //todo remove profiels?
 public class EmailSenderReal implements EmailSender {
 
     private JavaMailSender sender;

@@ -273,7 +273,23 @@ zavola epir service, ta zavola relanou expr repo, nacte, zavola email mock,
 test to overi.
 pro test bude v app properties cron experssion a pro prod bude jiy cron exproession
 
+pro test integracni je spravne auotriovnaan beana meial sender mock v mainu expiraitonservice a tentyz mock
+je v testu
+problme je ze kdy se zaovla em.perist a flus a pak expira service vola expir repository tak je prazdna.
 
+v testu mam autowired expir reposritory, zavolam save, ale meiitm se v jinym vlakene pusti kod a expir repo je przadna  je to tim ze
+v testu je to jina tranakce? jak se vynuti transakce commit?
+a co vlakna a repository?
+https://stackoverflow.com/questions/24338150/how-to-manually-force-a-commit-in-a-transactional-method
+spring testy maji nastroje na praci s transakcema
+
+1., ous o reseni udelat novu tridu kter bude beana a bude mi tmeotdu trnaactional reuires new a ta to ulozi,
+pri navratu meotdy skonci transkace  tim padem se comminte do db. ano to zafungovalo
+
+2. sping test nastorje
+4.
+repository multithread
+--------
 
 architkerura bud mt vedle sbe v resources vsechny pofily prod dev test nebo test dat do test resources
 kdyz posuti gradle spring context proc nebere s main resources ale z test resources?
@@ -281,7 +297,21 @@ kdyz posuti gradle spring context proc nebere s main resources ale z test resour
 //todo refactor v testech persisovtavni obejtu, delegovat to na pomocnou em todu TesDtaG
 
 
+//todo refacotirng testu, co je unit es t aco otestovat integracne,
+
+//profily jeden pristup msito vice - prifily test, prod  apodel toho beana versurs test config class a app proeprties
+
+//todo pidat scheduler na pricitani dluhu
+
+
 //todo v tesetech uvest db do vychoziho stavu. do kadych teardown ale mezi jednotlivymi nebo az po vsech testech?
 
 //rozlisit unit testy a integracni testy nejak v gradlu, napr pustit gradlem jen unit testy a integracni
 pomoci profulu nebo group?
+
+//todo kdyby to byla vetsi paliakce kolik vlaken soucasne muze pristupvat do batabzae?
+repo do crud repo? to spravuej hiberante e je spojen s conneciton pooolem?
+nastavit omezenei?
+co kyudy nejaka vleka plikace ma mit 1000 uzivatelu soucasne? tak cekaji na napr 16 coneciton az se uvolni?
+proot je lepsi elastic search? ze heldani muze paralelne zpracovat tisice pozadavku soucasne?
+

@@ -1,19 +1,22 @@
 package com.kr.librarysystem.library
 
-import com.kr.librarysystem.TestDataG
+import com.kr.librarysystem.utils.TestDataG
 import com.kr.librarysystem.email.EmailFormatter
 import com.kr.librarysystem.entities.Expiration
 import com.kr.librarysystem.persistence.ExpirationRepository
+import com.kr.librarysystem.utils.DateService
 import spock.lang.Specification
 
 import java.time.LocalDate
 
 
-class ExpirationNotificationServiceSpec extends Specification {
+class ExpirationServiceSpec extends Specification {
 
     private ExpirationRepository repository = Mock()
     private EmailFormatter emailFormatter = Mock()
-    def expirationNotificationService = new ExpirationNotificationService(repository, emailFormatter)
+    private DateService dateService = Mock()
+
+    def expirationService = new ExpirationService(repository, dateService, emailFormatter)
     def book1 = TestDataG.getBook1()
     def book2 = TestDataG.getBook2()
     def book3 = TestDataG.getBook3()
@@ -31,7 +34,7 @@ class ExpirationNotificationServiceSpec extends Specification {
 
     def "NotifyMembersAboutFutureExpirations should call email formatter"() {
         when:
-        expirationNotificationService.notifyMembersAboutFutureExpirations([book1, book2, book3, book4, book5])
+        expirationService.notifyMembersAboutFutureExpirations([book1, book2, book3, book4, book5])
 
         then:
         1 * emailFormatter.formatAndSendMailForFuture([book1, book2])
@@ -41,7 +44,7 @@ class ExpirationNotificationServiceSpec extends Specification {
 
     def "NotifyMembersAboutTodayExpirations should call email formatter"() {
         when:
-        expirationNotificationService.notifyMembersAboutTodayExpirations([book1, book2, book3, book4, book5])
+        expirationService.notifyMembersAboutTodayExpirations([book1, book2, book3, book4, book5])
 
         then:
         1 * emailFormatter.formatAndSendMailForToday([book1, book2])

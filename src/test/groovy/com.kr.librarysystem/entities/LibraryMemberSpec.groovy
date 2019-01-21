@@ -1,7 +1,7 @@
 package com.kr.librarysystem.entities
 
 
-import com.kr.librarysystem.TestDataG
+import com.kr.librarysystem.utils.TestDataG
 import spock.lang.Specification
 
 class LibraryMemberSpec extends Specification {

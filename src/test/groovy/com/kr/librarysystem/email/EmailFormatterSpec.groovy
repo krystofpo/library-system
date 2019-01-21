@@ -1,6 +1,6 @@
 package com.kr.librarysystem.email
 
-import com.kr.librarysystem.TestDataG
+import com.kr.librarysystem.utils.TestDataG
 import spock.lang.Specification
 
 import java.text.SimpleDateFormat
@@ -26,7 +26,7 @@ class EmailFormatterSpec extends Specification {
         given:
         def subjectMatcher = { it.contains('dnes zacina nabihat') } // do Closure vstupuje parametr String it
         def messageMatcher = {
-            it.contains('Neruda') && it.contains('Povidky') && it.contains('Capek') && it.contains('Valka') && it.contains('Pujceno do: 01.07.2018')
+            it.contains('Neruda') && it.contains('Povidky') && it.contains('Capek') && it.contains('Valka') && it.contains('Pujceno do: 01.07.2018') //todo refacotr na promennou date a nejaekj formatter
         }
 
         when:

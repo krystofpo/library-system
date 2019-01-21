@@ -5,10 +5,11 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
-@SpringBootTest
-@ActiveProfiles("test")
-class EmailSenderSpec extends Specification {
-
+//@SpringBootTest
+//@ActiveProfiles("test")
+class EmailSenderSpec
+//        extends Specification
+{
     //@Autowired
     //private EmailSenderReal sender
 

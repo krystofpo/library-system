@@ -1,33 +1,36 @@
 package com.kr.librarysystem.library
 
-import com.kr.librarysystem.TestDataG
+import com.kr.librarysystem.utils.TestDataG
+import com.kr.librarysystem.config.TestMockConfig
+import com.kr.librarysystem.email.EmailFormatter
+import com.kr.librarysystem.email.EmailSender
 import com.kr.librarysystem.entities.Expiration
 import com.kr.librarysystem.persistence.AuthorRepository
 import com.kr.librarysystem.persistence.BookRepository
 import com.kr.librarysystem.persistence.ExpirationRepository
 import com.kr.librarysystem.persistence.LibraryMemberRepository
+import com.kr.librarysystem.utils.DBSaver
 import com.kr.librarysystem.utils.DateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-import javax.persistence.EntityManager
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Import(TestMockConfig)
 @Transactional
-class ExpirationServiceIntegrationSpec extends Specification {
+class SchedulerAndExpirationServiceIntegrationSpec extends Specification {
 
     @Autowired
     ExpirationRepository expirationRepository
-
-    @Autowired
-    EntityManager em
 
     @Autowired
     BookRepository bookRepository
@@ -38,7 +41,14 @@ class ExpirationServiceIntegrationSpec extends Specification {
     @Autowired
     LibraryMemberRepository libraryMemberRepository
 
+    @Autowired
+    DBSaver dbSaver
+
+    @Autowired
+    EmailSender emailSender
+
     DateService dateService = Mock()
+    EmailFormatter emailFormatter
 
     ExpirationService service
     def book1 = TestDataG.getBook1()
@@ -50,7 +60,8 @@ class ExpirationServiceIntegrationSpec extends Specification {
     Closure<Boolean> assertEqualsExpirations
 
     def setup() {
-        service = new ExpirationService(expirationRepository, dateService)
+        emailFormatter = new EmailFormatter(emailSender)
+        service = new ExpirationService(expirationRepository, dateService, emailFormatter)//todo move to declaration
         authorRepository.deleteAll()
         libraryMemberRepository.deleteAll()
         bookRepository.deleteAll()
@@ -66,7 +77,7 @@ class ExpirationServiceIntegrationSpec extends Specification {
         date2 = '2018-08-03'
         date3 = '2018-08-06'
 
-        TestDataG.persistBooksAndNestedObjects([book1, book2, book3], em)
+        TestDataG.persistBooksAndNestedObjects([book1, book2, book3], bookRepository, authorRepository, libraryMemberRepository)
 
 
         assertEqualsExpirations = { Expiration actual, Expiration expected ->
@@ -106,7 +117,7 @@ class ExpirationServiceIntegrationSpec extends Specification {
 
     }
 
-    def "AddExpiration creates new expirations"() {
+    def "AddExpiration creates new expirations"() { //todo refactor to unit test, mock repository
         given:
         def expectedExpiration1 = new Expiration(expiresOn: date1, todayExpirations: [], futureExpirations: [book1])
         def expectedExpiration2 = new Expiration(expiresOn: date2, todayExpirations: [book1], futureExpirations: [book2])
@@ -125,7 +136,7 @@ class ExpirationServiceIntegrationSpec extends Specification {
 
     }
 
-    def 'addExpiration finds existing Expiration and adds to future expirations'() {
+    def 'addExpiration finds existing Expiration and adds to future expirations'() {//todo refactor to unit test, mock repository
         given:
         expirationRepository.save(new Expiration(expiresOn: date1, todayExpirations: [], futureExpirations: [book2]))
         def expectedExpiration1 = new Expiration(expiresOn: date1, todayExpirations: [], futureExpirations: [book2, book1])
@@ -142,7 +153,7 @@ class ExpirationServiceIntegrationSpec extends Specification {
 
     }
 
-    def 'addExpiration finds existing Expiration and adds to today expirations'() {
+    def 'addExpiration finds existing Expiration and adds to today expirations'() { //todo refactor to unit test, mock repository
         given:
         expirationRepository.save(new Expiration(expiresOn: date2, todayExpirations: [book2], futureExpirations: []))
         def expectedExpiration2 = new Expiration(expiresOn: date2, todayExpirations: [book1, book2], futureExpirations: [])
@@ -159,7 +170,7 @@ class ExpirationServiceIntegrationSpec extends Specification {
 
     }
 
-    def "RemoveExpiration removes books from existing expirations - today books"() {
+    def "RemoveExpiration removes books from existing expirations - today books"() { //todo refactor to unit test, mock repository
         given:
         expirationRepository.save(new Expiration(expiresOn: date2, todayExpirations: [book1, book2,book3], futureExpirations: []))
         def expectedExpiration = new Expiration(expiresOn: date2, todayExpirations: [book2], futureExpirations: [])
@@ -173,7 +184,7 @@ service.removeExpiration([book1, book3])
         expirations.any { it -> assertEqualsExpirations(it, expectedExpiration) }
     }
 
-    def "RemoveExpiration removes books from existing expirations - future books"() {
+    def "RemoveExpiration removes books from existing expirations - future books"() { //todo refactor to unit test, mock repository
         given:
         expirationRepository.save(new Expiration(expiresOn: date2, todayExpirations: [book2], futureExpirations: [book1]))
         def expectedExpiration = new Expiration(expiresOn: date2, todayExpirations: [book2], futureExpirations: [])
@@ -187,7 +198,7 @@ service.removeExpiration([book1, book3])
         expirations.any { it -> assertEqualsExpirations(it, expectedExpiration) }
     }
 
-    def "RemoveExpiration removes books from existing expirations and if the expiration is empty deletes it"() {
+    def "RemoveExpiration removes books from existing expirations and if the expiration is empty deletes it"() { //todo refactor to unit test, mock repository
         given:
         expirationRepository.save(new Expiration(expiresOn: date2, todayExpirations: [book1], futureExpirations: []))
 
@@ -196,5 +207,46 @@ service.removeExpiration([book1, book3])
 
         then:
         expirationRepository.count() == 0L
+    }
+
+@Transactional //todo ma by tranacitonal? na konci se to rollbakcne, ale kdyz expiraiton vymaze mezitim  expiration tak se nebude moct vymazat v testu
+    def "Scheduler should send email notifications for expirations"() { //todo add scheduler fucnitnality, jak to mam autorieovat? co bdue vytvorney dvakrt?
+        //todo ejdno v konextu ejednou v tesu? serivce bude dvakrta
+        given:
+        def book1 = TestDataG.getBook1()//todo refactor where it shoud be shared and intitilaized
+        def book2 = TestDataG.getBook2()
+        def book3 = TestDataG.getBook3()
+        def book4 = TestDataG.getBook4()
+        def member1 = TestDataG.getLibraryMember1()
+        def member2 = TestDataG.getLibraryMember2()
+        member1.setEmail('email1')
+        member2.setEmail('email2')
+        book1.setBorrowedBy(member1)
+        book2.setBorrowedBy(member2)
+        book3.setBorrowedBy(member2)
+        book4.setBorrowedBy(member2)
+        book1.setBorrowedUntil(new Date())
+        book2.setBorrowedUntil(new Date())
+        book3.setBorrowedUntil(new Date())
+        book4.setBorrowedUntil(new Date())
+        String today = new SimpleDateFormat('yyyy-MM-dd').format(new Date())
+        def expires = new Expiration(expiresOn: today, todayExpirations: [book1, book2, book3], futureExpirations: [book4])
+
+
+        //saving has to be in a different class with transactional requires new, so it gets commited
+        dbSaver.saveExpiration(expires, expirationRepository, authorRepository, bookRepository, libraryMemberRepository)
+        long count = expirationRepository.count()
+    println(count)
+
+
+        when:
+       //LibraryScheduler is fired meanwhile, should find expiration and call EmailSender
+        Thread.sleep(10*1000L)
+
+        then:
+        1 * emailSender.sendEmail('email1', { it.contains('dnes') }, { it.contains('Neruda') })
+        1 * emailSender.sendEmail('email2', { it.contains('dnes') }, { it.contains('Valka') && it.contains('Saman') })
+        1 * emailSender.sendEmail('email2', { it.contains('brzy') }, { it.contains('1984') })
+        expirationRepository.count()==0L
     }
 }

@@ -1,9 +1,13 @@
 package com.kr.librarysystem.library;
 
+import com.kr.librarysystem.email.EmailFormatter;
 import com.kr.librarysystem.entities.Book;
 import com.kr.librarysystem.entities.Expiration;
+import com.kr.librarysystem.entities.LibraryMember;
 import com.kr.librarysystem.persistence.ExpirationRepository;
 import com.kr.librarysystem.utils.DateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,19 +17,27 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import java.util.stream.Collectors;
+
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Service
 public class ExpirationService {
 
     private ExpirationRepository expirationRepository;
     private DateService dateService;
+    private EmailFormatter emailFormatter;
     private DateTimeFormatter formatter;
+    private Logger logger = LoggerFactory.getLogger(ExpirationService.class);
 
     @Autowired
-    public ExpirationService(ExpirationRepository expirationRepository, DateService dateService) {
+    public ExpirationService(ExpirationRepository expirationRepository, DateService dateService, EmailFormatter emailFormatter) {
         this.expirationRepository = expirationRepository;
         this.dateService = dateService;
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.emailFormatter = emailFormatter;
     }
 
     @Transactional
@@ -34,6 +46,50 @@ public class ExpirationService {
             addRecordForTodayExpiration(book);
             addRecordForFutureExpiration(book);
         }
+    }
+
+    @Transactional
+    public void removeExpiration(List<Book> books) {
+        for (Book book : books) {
+            removeRecordFromExpirations(book);
+        }
+    }
+
+    @Transactional
+    public void notifyMembers() {
+        Expiration expiration = getExpirationForToday(); //todo refactro optional
+        if (expiration!=null){
+        notifyMembersAboutTodayExpirations(expiration.getTodayExpirations()); //todo check for null
+        notifyMembersAboutFutureExpirations(expiration.getFutureExpirations());
+        expirationRepository.delete(expiration);
+        }
+    }
+
+    private Expiration getExpirationForToday() {
+        String today = LocalDate.now().toString();
+        List<Expiration> todayExpiratons = expirationRepository.findByExpiresOn(today);
+        long count  =  expirationRepository.count();
+        if(isEmpty(todayExpiratons)){return null;}
+        else if (todayExpiratons.size()==1){
+            return todayExpiratons.get(0);
+    } else {
+            logger.warn("Found more than one Expiration for today"); //todo neccesary? db constriant on today column
+            return todayExpiratons.get(0);
+        }
+    }
+
+    void notifyMembersAboutFutureExpirations(List<Book> expiringBooks) {
+        Map<LibraryMember, List<Book>> expiringBooksPerMember = expiringBooks.stream().collect(
+                Collectors.groupingBy(Book::getBorrowedBy));
+        expiringBooksPerMember.values()
+                .forEach(books -> emailFormatter.formatAndSendMailForFuture(books));
+    }
+
+    void notifyMembersAboutTodayExpirations(List<Book> expiringBooks) {
+        Map<LibraryMember, List<Book>> expiringBooksPerMember = expiringBooks.stream().collect(
+                Collectors.groupingBy(Book::getBorrowedBy));
+        expiringBooksPerMember.values()
+                .forEach(books -> emailFormatter.formatAndSendMailForToday(books));
     }
 
     private void addRecordForFutureExpiration(Book book) {
@@ -96,12 +152,7 @@ public class ExpirationService {
         return calculateDate(book.getBorrowingPeriod());
     }
 
-    @Transactional
-    public void removeExpiration(List<Book> books) {
-        for (Book book : books) {
-            removeRecordFromExpirations(book);
-        }
-    }
+
 
     private void removeRecordFromExpirations(Book book) {
         List<Expiration> expirations = findExpirationsThatContain(book);

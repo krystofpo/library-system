@@ -1,6 +1,6 @@
 package com.kr.librarysystem.library
 
-import com.kr.librarysystem.TestDataG
+import com.kr.librarysystem.utils.TestDataG
 import com.kr.librarysystem.entities.LibraryMember
 import com.kr.librarysystem.persistence.BookRepository
 import com.kr.librarysystem.persistence.LibraryMemberRepository

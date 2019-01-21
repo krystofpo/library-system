@@ -35,7 +35,7 @@ dependencies {
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
-	compile group: 'cglib', name: 'cglib-nodep', version: '3.2.5'
+	compile group: 'cglib', name: 'cglib-nodep', version: '3.2.5' //todo testocmcompile?
 
 
 	//testCompile('org.springframework.security:spring-security-test')

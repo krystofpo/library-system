@@ -1,17 +1,20 @@
 package com.kr.librarysystem.library
 
-import com.kr.librarysystem.TestDataG
+import com.kr.librarysystem.utils.TestDataG
+import com.kr.librarysystem.config.TestMockConfig
 import com.kr.librarysystem.persistence.AuthorRepository
 import com.kr.librarysystem.persistence.BookRepository
 import com.kr.librarysystem.persistence.LibraryMemberRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Import(TestMockConfig)
 @Transactional
 class LibraryIntegrationSpec extends Specification {
 
