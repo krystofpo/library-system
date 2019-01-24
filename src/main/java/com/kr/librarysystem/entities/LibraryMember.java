@@ -15,6 +15,7 @@ public class LibraryMember {
     private String lastName;
     private String email;
     private Date membershipUntil;
+    private int debt;
 
 @OneToMany(mappedBy = "borrowedBy")
     private final List<Book> borrowedBooks=new ArrayList<>();
@@ -64,6 +65,14 @@ public class LibraryMember {
 
     public List<Book> getBorrowedBooks() {
         return borrowedBooks;
+    }
+
+    public int getDebt() {
+        return debt;
+    }
+
+    public void setDebt(int debt) {
+        this.debt = debt;
     }
 
     public List<Book> borrowBooks(List<Book> books) {

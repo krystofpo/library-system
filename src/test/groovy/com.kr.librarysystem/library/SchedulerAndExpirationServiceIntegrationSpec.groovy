@@ -1,7 +1,6 @@
 package com.kr.librarysystem.library
 
 import com.kr.librarysystem.utils.TestDataG
-import com.kr.librarysystem.config.TestMockConfig
 import com.kr.librarysystem.email.EmailFormatter
 import com.kr.librarysystem.email.EmailSender
 import com.kr.librarysystem.entities.Expiration
@@ -11,23 +10,18 @@ import com.kr.librarysystem.persistence.ExpirationRepository
 import com.kr.librarysystem.persistence.LibraryMemberRepository
 import com.kr.librarysystem.utils.DBSaver
 import com.kr.librarysystem.utils.DateService
+import integrationTest.AbstractIntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
-import spock.lang.Specification
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 
-@SpringBootTest
-@ActiveProfiles("test")
-@Import(TestMockConfig)
+
 @Transactional
-class SchedulerAndExpirationServiceIntegrationSpec extends Specification {
+class SchedulerAndExpirationServiceIntegrationSpec extends AbstractIntegrationTest {
 
     @Autowired
     ExpirationRepository expirationRepository
@@ -234,14 +228,14 @@ service.removeExpiration([book1, book3])
 
 
         //saving has to be in a different class with transactional requires new, so it gets commited
-        dbSaver.saveExpiration(expires, expirationRepository, authorRepository, bookRepository, libraryMemberRepository)
+        dbSaver.saveExpiration(expires)
         long count = expirationRepository.count()
     println(count)
 
 
         when:
        //LibraryScheduler is fired meanwhile, should find expiration and call EmailSender
-        Thread.sleep(10*1000L)
+        Thread.sleep(8*1000L)
 
         then:
         1 * emailSender.sendEmail('email1', { it.contains('dnes') }, { it.contains('Neruda') })

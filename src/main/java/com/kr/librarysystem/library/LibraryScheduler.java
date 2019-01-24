@@ -10,7 +10,7 @@ public class LibraryScheduler {
 @Autowired
 ExpirationService expirationService;
 
-@Scheduled(cron = "*/8 * * * * *")
+@Scheduled(cron = "${scheduler.expirationNotification}")
 public void sendNotifications(){
     expirationService.notifyMembers();
 }

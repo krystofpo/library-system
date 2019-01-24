@@ -5,6 +5,7 @@ import com.kr.librarysystem.config.TestMockConfig
 import com.kr.librarysystem.persistence.AuthorRepository
 import com.kr.librarysystem.persistence.BookRepository
 import com.kr.librarysystem.persistence.LibraryMemberRepository
+import integrationTest.AbstractIntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -12,12 +13,9 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-@SpringBootTest
-@ActiveProfiles("test")
-@Import(TestMockConfig)
-@Transactional
-class LibraryIntegrationSpec extends Specification {
 
+@Transactional
+class LibraryIntegrationSpec extends AbstractIntegrationTest {
 
     @Autowired
     private Library library

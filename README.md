@@ -284,11 +284,35 @@ https://stackoverflow.com/questions/24338150/how-to-manually-force-a-commit-in-a
 spring testy maji nastroje na praci s transakcema
 
 1., ous o reseni udelat novu tridu kter bude beana a bude mi tmeotdu trnaactional reuires new a ta to ulozi,
-pri navratu meotdy skonci transkace  tim padem se comminte do db. ano to zafungovalo
+pri navratu meotdy skonci transkace  tim padem se comminte do db.
+
+ano to zafungovalo
+https://stackoverflow.com/questions/24338150/how-to-manually-force-a-commit-in-a-transactional-method
+nestaci ani udelat test trancastionala a zavolat enitty manager flush, anu nefuguje na rpeository zaovlat flush
+zrejme se ulozi jen do session ale ne udela se commit do db
+neco podobnyho se resi
+https://stackoverflow.com/questions/17263475/how-to-flush-data-into-db-inside-active-spring-transaction
+https://www.marcobehler.com/2014/06/25/should-my-tests-be-transactional/
 
 2. sping test nastorje
 4.
 repository multithread
+
+dodela sceudler, misto harcoded cron dat do app proerties, ozkouset
+
+tohle em potrapilo
+eljsem v app proerie stes por scheduler corn epxresion = "0/5 0 atd atd *"
+a test bezel v [pohode
+a pak jsem dal do app loca.; poroerties to samy jenom ="0 0 23 atd *"
+a nelso to psalo to zenmuze spravne parsovat cislo "0
+necap ljsem ejslti je spatnej ofrmat
+cornu
+davlaj e mdebug a trvlao a to zjsiit ljsem ze do cron vytvarece jde celj stirng i stem auvozkovkaam
+mylsej seze to nevadi
+a ono o tnevadi kdyz je tam "5/0
+ale kdy je tam "0  tak to vadi
+a az pak jsem pochopil ze ze v app proertie s se nepisou uvozovky no sakra to byl orisek ztratilj se cas
+"
 --------
 
 architkerura bud mt vedle sbe v resources vsechny pofily prod dev test nebo test dat do test resources
@@ -296,8 +320,22 @@ kdyz posuti gradle spring context proc nebere s main resources ale z test resour
 
 //todo refactor v testech persisovtavni obejtu, delegovat to na pomocnou em todu TesDtaG
 
+//todo book odstranit ransietn z boroing epriod  anotoficaiton perieod
+
+//todo zjisit jesli assign debt to members kdyz je transcitonal a  vytahujou se v ni z repo librame memeber  a
+a pak se na nich meni stav, jestli hibernate sam ulozi szmeny bez save,  nebo jeslti je treba zaovlat  repo.flush n a jeslit dky ze vrchn metoda transcitonal jestli  to funguje in ameotdy volany  z tyto metody
 
 //todo refacotirng testu, co je unit es t aco otestovat integracne,
+
+//todo expiraiton date ze stirngu anebo co je rychlejis priindexaci v DB? muze to by taky ID a unique?
+
+//todo ahradit date  na localdate prej Hibernate s tim umi
+
+// todo v auhorech a libray member co je id musi byt unikantni jmeno aprijemnei a ork narozeni compsoitni klic, ale pomale, nejak vyreit
+kdyz knihovnik zaklada do db entit tak se to v jave porveri jeslti uz nenenv db a takze v db bude bez koncstraintu, java zajisti  muz u vzuit equlas method vytahen z db db podle jmena aprijmeni u atora i memebera
+ a potom zavola equals metodu
+viz
+https://www.baeldung.com/hibernate-date-time
 
 //profily jeden pristup msito vice - prifily test, prod  apodel toho beana versurs test config class a app proeprties
 
@@ -315,3 +353,9 @@ nastavit omezenei?
 co kyudy nejaka vleka plikace ma mit 1000 uzivatelu soucasne? tak cekaji na napr 16 coneciton az se uvolni?
 proot je lepsi elastic search? ze heldani muze paralelne zpracovat tisice pozadavku soucasne?
 
+
+//pocitani zpozdyho
+
+
+/toto dodelat
+opet scheulder jednou deen

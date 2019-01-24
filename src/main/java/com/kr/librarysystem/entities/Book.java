@@ -16,14 +16,19 @@ public class Book {
     private Author author;
     private String title;
     private boolean borrowed=false;
+
+    @Temporal(TemporalType.DATE)
     private Date borrowedUntil;
-    @Transient
+
+    @Transient //todo remove
     private Period borrowingPeriod;
-    @Transient
+    @Transient //todo remove
     private Period notificationPeriod; // example: member will be notified 5 days before expiration of this book
 
     @ManyToOne
     private LibraryMember borrowedBy;
+
+    private int debtPerDay;
 
     public Book() {
         borrowingPeriod=Period.ofDays(20);
@@ -92,6 +97,14 @@ public class Book {
 
     public void setNotificationPeriod(Period notificationPeriod) {
         this.notificationPeriod = notificationPeriod;
+    }
+
+    public int getDebtPerDay() {
+        return debtPerDay;
+    }
+
+    public void setDebtPerDay(int debtPerDay) {
+        this.debtPerDay = debtPerDay;
     }
 
     public void borrowMe(LibraryMember member) {
